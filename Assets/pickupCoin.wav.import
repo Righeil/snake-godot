@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/pickupCoin.wav-be680aecee3c783d1a9d6ac216aac9ba.sample"
+path="res://.import/pickupCoin.wav-bdb13b7d910caf29db7c8ed9a8bca844.sample"
 
 [deps]
 
-source_file="res://pickupCoin.wav"
-dest_files=[ "res://.import/pickupCoin.wav-be680aecee3c783d1a9d6ac216aac9ba.sample" ]
+source_file="res://Assets/pickupCoin.wav"
+dest_files=[ "res://.import/pickupCoin.wav-bdb13b7d910caf29db7c8ed9a8bca844.sample" ]
 
 [params]
 

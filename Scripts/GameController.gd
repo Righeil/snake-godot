@@ -3,9 +3,9 @@ extends Node2D
 onready var player = $Player
 onready var tail_part = load("res://Objects/Tail.tscn")
 onready var apple = $Apple
-onready var label = $Label
-onready var eat_sound = $AudioStreamPlayer2D
-onready var move_sound = $AudioStreamPlayer2D2
+onready var label = $ScoreLabel
+onready var eat_sound = $EatSound
+onready var move_sound = $CrawlSound
 
 var player_cell_position = Vector2(0, 0)
 var score := 0
@@ -26,6 +26,7 @@ const TIME_INTERVAL := 0.25
 var random = RandomNumberGenerator.new()
 
 func _ready():
+	random.randomize()
 	_set_position(player, Vector2(6, 6), false)
 	_randomize_apple_position()
 	for i in range(3):
@@ -118,6 +119,7 @@ func _randomize_apple_position():
 		if is_valid_position:
 			_set_position(apple, cell_position, false)
 			return
+	get_tree().change_scene("res://DeadScene.tscn") #all apples eaten, but i am too lazy to make win text or scene
 
 func _input(event):
 	if event.is_pressed():
