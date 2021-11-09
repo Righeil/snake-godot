@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Sprites/1500x500.jpg" type="Texture" id=1]
+
+[node name="DeadScene" type="Node2D"]
+
+[node name="dedsprite" type="Sprite" parent="."]
+position = Vector2( 411.229, 418.86 )
+scale = Vector2( 0.462667, 0.436 )
+texture = ExtResource( 1 )
