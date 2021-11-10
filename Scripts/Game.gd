@@ -16,8 +16,6 @@ var apple_cell_position := Vector2(0, 0)
 var direction = Vector2.RIGHT
 var new_direction = Vector2.RIGHT
 
-var score := 0
-
 const TIMER_TICK_INTERVAL := 0.25
 var time := 0.0
 
@@ -30,6 +28,7 @@ func _ready():
 		tail_cell_position.append(Vector2(5 - i, 6))
 		tail_size += 1
 		add_child_below_node($Tail, tail[i])
+		_change_tail_color(tail[i])
 		_visualize(tail[i], tail_cell_position[i])
 	
 	_visualize(head, head_cell_position)
@@ -42,6 +41,7 @@ func _process(delta):
 			time = 0
 
 	time += delta
+	Globals.game_time += delta
 
 func _process_movement():
 	for i in range(tail_size - 1, 0, -1):
@@ -64,20 +64,20 @@ func _process_movement():
 		head_cell_position.y = 0
 	
 	_visualize(head, head_cell_position)
-	$CrawlSound.play()
+	$Player/CrawlSound.play()
 
 func _process_collision():
 	for i in range(0, tail.size()):
 		if head_cell_position == tail_cell_position[i]:
-			get_tree().change_scene("res://DeadScene.tscn")
+			Globals.change_screen("death_screen")
 	
 	if head_cell_position == apple_cell_position:
 		_randomize_apple_position()
 		_add_tail()
 		
-		score += 1
-		$ScoreLabel.text = "Score: " + str(score)
-		$EatSound.play()
+		Globals.score += 1
+		$ScoreLabel.text = "Score: " + str(Globals.score)
+		$Player/EatSound.play()
 
 func _randomize_apple_position():
 	for cell in range(WORLD_SIZE.x * WORLD_SIZE.y):
@@ -97,12 +97,13 @@ func _randomize_apple_position():
 		if is_vaild_position:
 			_visualize(apple, apple_cell_position)
 			return
-	get_tree().change_scene("res://FinishScene.tscn")
+	Globals.change_screen("finish_screen")
 
 func _add_tail():
 	tail.append(tail_part.instance())
 	tail_cell_position.append(head_cell_position)
 	add_child_below_node($Tail, tail[tail_size])
+	_change_tail_color(tail[tail_size])
 	_visualize(tail[tail_size], tail_cell_position[tail_size]) # бред
 	tail_size += 1
 
@@ -112,6 +113,10 @@ func _visualize(object, _position):
 		_position.y * CELL_SIZE.y
 	)
 	
+func _change_tail_color(object):
+	var color = 1 - (tail_size * 0.01)
+	object.modulate = Color(color, color, color)
+
 func _input(event):
 	if event.is_pressed():
 		if event.is_action_pressed("up") and direction != Vector2.DOWN:
